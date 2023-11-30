@@ -2,7 +2,6 @@
  * This class represents a Document to contain the request.
  * @author M. Phan
  */
-
 public class Document {
     private Immigrant immigrant;
     private Applicant applicant;
@@ -59,10 +58,11 @@ public class Document {
      * @return
      */
     public String display(){
+        //UNSUPPORTED
         return "";
     }
 
-    //Document can be modified via a set of getters.
+   
 
 
 

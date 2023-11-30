@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
  * Tester for Document
  * @author M. Phan
  */
-
 public class DocumentTest {
 
     Applicant a = Applicant.createApplicant("Andrew", "Braddock", 25, 12345, "@gmail");

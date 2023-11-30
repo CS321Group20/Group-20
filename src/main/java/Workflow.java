@@ -1,3 +1,4 @@
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,26 +8,30 @@ import java.util.Queue;
  */
 public class Workflow {
 
-    private static Queue<String> steps;
-    private static boolean isCompleted;
-    private static Document doc;
+    static Queue<String> steps;
+    static boolean isCompleted;
+    static Document doc;
 
     // Static initialization block
     static boolean init(Document d){
         if (d == null) return false;
+        doc = d;
         steps = new LinkedList<>();
         steps.add("Review");
         steps.add("Approval");
-        doc = d;
         isCompleted = false;
         return true;
     }
 
     //external method to createWorkflow
     public static boolean createWorkflow(Document d) {
+        if (d == null){
+            return false;
+        }
         return init(d);
     }
 
+    //setters and getters
     public static void setDoc(Document d){
         doc = d;
     }
@@ -57,11 +62,20 @@ public class Workflow {
      * @return true if data is updated successfully, false otherwise.
      */
     public static boolean updateData(String stepname, Document d, boolean flag) {
+        //checking
+        if (stepname == null || d == null){ return false;}
+        if (!stepname.equals("Review") && !stepname.equals("Approval")) return false;
+
+        //update data after reviewing
         if (stepname.equals("Review")){
+            doc = d;
             if (flag){
                 steps.remove();
+                return true;
             }
         }
+
+        //update data for approval
         if (stepname.equals("Approval")){
             steps.remove();
             if(flag){
@@ -71,6 +85,7 @@ public class Workflow {
                 steps.add("Review");
                 steps.add("Approval");
             }
+            return true;
         }
         return false;
     }
@@ -78,18 +93,26 @@ public class Workflow {
     /**
      * Show the current status of the workflow.
      *
-     * @return
+     * @return the current status
      */
     public static String showStatus() {
-        return "";
+        if (!isCompleted) return steps.peek();
+        return "Completed";
     }
 
     /**
      * Show the remaining steps in line.
      *
-     * @return
+     * @return remaining steps
      */
     public static String getRemainingSteps() {
-        return "";
+        StringBuilder s = new StringBuilder();
+        if (steps.peek() != null){
+            for(String step: steps){
+                s.append(step + " ");
+            }
+        }
+        else {return "Workflow is finished.";}
+        return s.toString().trim();
     }
 }

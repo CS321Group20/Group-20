@@ -1,72 +1,95 @@
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
- * Tester for Workflow.
+ * This class represents a workflow object.
  * @author M. Phan
  */
-public class WorkflowTest {
+public class Workflow {
 
-    //Instantiate objects for testing purposes
-    Immigrant i = Immigrant.createImmigrant("David","86 Braddock Road", 25, 12345);
-    Applicant a = Applicant.createApplicant("Andrew", "Braddock", 25, 12345, "@gmail");
-    Document d = Document.createDoc(i,a,2 , 0);
+    private static Queue<String> steps;
+    private static boolean isCompleted;
+    private static Document doc;
 
-    @Test
-    void testCreateWorkflow(){
-        assertFalse(Workflow.createWorkflow(null));
-        assertTrue(Workflow.createWorkflow(d));
+    // Static initialization block
+    static boolean init(Document d){
+        if (d == null) return false;
+        steps = new LinkedList<>();
+        steps.add("Review");
+        steps.add("Approval");
+        doc = d;
+        isCompleted = false;
+        return true;
     }
 
-    
-    @Test
-    void testInitialSteps(){
-        //initializing variables
-        assertEquals(Workflow.getRemainingSteps(),"Review Approval");
-        assertFalse(Workflow.isCompleted());
+    //external method to createWorkflow
+    public static boolean createWorkflow(Document d) {
+        return init(d);
     }
 
-
-    @Test
-    void testEntries1(){
-        assertFalse(Workflow.updateData(null, d, false));
+    public static void setDoc(Document d){
+        doc = d;
     }
 
-    @Test
-    void testEntries2(){
-        assertFalse(Workflow.updateData("apple", d, false));
+    public static Document getDoc() {
+        return doc;
     }
 
-    @Test
-    void testEntries3(){
-        assertFalse(Workflow.updateData("Review", null, false));
+    public static String getCurrStep(){
+        return steps.peek();
     }
 
-    @Test 
-    void testReview(){
-        assertTrue(Workflow.updateData("Review", d, true));
-        assertEquals(Workflow.showStatus(),"Approval");
+    public static void setCompleted(){
+        isCompleted = true;
     }
 
-    @Test
-    void testApproval(){
-        //disapprove, sending back 
-
-        assertTrue(Workflow.updateData("Approval", d, false));
-        assertEquals(Workflow.showStatus(),"Review");
-        assertEquals(Workflow.getRemainingSteps(),"Review Approval");
-        assertFalse(Workflow.isCompleted());
-
-        Workflow.updateData("Review", d, true);
-        
-        assertTrue(Workflow.updateData("Approval", d, true));
-        assertEquals(Workflow.showStatus(),"Completed");
-        assertTrue(Workflow.isCompleted());
-        assertEquals(Workflow.getRemainingSteps(),"Workflow is finished.");
+    public static boolean isCompleted() {
+        return isCompleted;
     }
 
 
-    
+    /**
+     * This method is used to update.
+     *
+     * @param stepname
+     * @param d
+     * @param flag to indicate whether this process is completed 
+     * @return true if data is updated successfully, false otherwise.
+     */
+    public static boolean updateData(String stepname, Document d, boolean flag) {
+        if (stepname.equals("Review")){
+            if (flag){
+                steps.remove();
+            }
+        }
+        if (stepname.equals("Approval")){
+            steps.remove();
+            if(flag){
+                setCompleted();
+            }
+            else{
+                steps.add("Review");
+                steps.add("Approval");
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Show the current status of the workflow.
+     *
+     * @return
+     */
+    public static String showStatus() {
+        return "";
+    }
+
+    /**
+     * Show the remaining steps in line.
+     *
+     * @return
+     */
+    public static String getRemainingSteps() {
+        return "";
+    }
 }

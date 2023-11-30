@@ -1,4 +1,3 @@
-package org.javafx;
 //Author: Arkan Jumani 
 public class Immigrant implements Person{
     private String name; //instance variables for the immigrant class

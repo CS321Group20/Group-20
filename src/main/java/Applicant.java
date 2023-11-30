@@ -1,5 +1,4 @@
 //Author: Phu Nguyen
-package org.javafx;
 public class Applicant implements Person{
     private String name; //instance variables for the applicant class
     private String address;

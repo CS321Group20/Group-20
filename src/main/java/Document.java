@@ -2,7 +2,6 @@
  * This class represents a Document to contain the request.
  * @author M. Phan
  */
-package org.javafx;
 
 public class Document {
     private Immigrant immigrant;

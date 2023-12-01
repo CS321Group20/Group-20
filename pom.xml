@@ -98,7 +98,7 @@
   <profile>
     <id>run-its</id>
     <properties>
-      <checkstyle.skip>true</checkstyle.skip>
+      <skip.checkstyle>true</skip.checkstyle>
       <maven.it.failure.ignore>false</maven.it.failure.ignore>
     </properties>
     <build>
